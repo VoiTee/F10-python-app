@@ -84,7 +84,7 @@ class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, *kwargs)
 
-        self.setWindowTitle("F10 control app v 0.4.1")
+        self.setWindowTitle("F10 control app v 0.4.2.0")
         ##
         self.menusManager = QStackedLayout()
 
@@ -253,7 +253,9 @@ class MainWindow(QMainWindow):
             connection.send(mess.encode('utf-8'))
             print(f"Char sent: {mess}")
             time.sleep(0.1)
-            self.charToSend = '0'
+            if mess != 'F' and mess != 'B' and mess != 'L' and mess!='R':
+                self.charToSend = '0'
+                print(f"TCP char set to {self.charToSend}")
         #else:
             #print("Nothing to send")
         pass
@@ -701,15 +703,19 @@ class MainWindow(QMainWindow):
         if event.type() == QEvent.KeyRelease:
             if event.key() == Qt.Key_Up:
                 print("Up arrow")
+                self.setChar('0')
                 self.buttUPOffHovered()
             elif event.key() == Qt.Key_Down:
                 print("Down arrow")
+                self.setChar('0')
                 self.buttDOWNOffHovered()
             elif event.key() == Qt.Key_Left:
                 print("Left arrow")
+                self.setChar('0')
                 self.buttLEFTOffHovered()
             elif event.key() == Qt.Key_Right:
                 print("Right arrow")
+                self.setChar('0')
                 self.buttRIGHTOffHovered()
 
 
@@ -794,7 +800,7 @@ class MainWindow(QMainWindow):
         # self.createMainMenu();
         if self.driveMode == 'A':
             self.AutonomousClicked()
-        elif self.menusManager.currentIndex() == 1 or self.menusManager.currentIndex() == 2:
+        elif self.menusManager.currentIndex() == 2:
             self.setChar('X')
         if self.menusManager.currentIndex() == 0:
             self.setChar('q') #for closing TCP connection
@@ -878,8 +884,9 @@ class MainWindow(QMainWindow):
 
     def UPclicked(self):
         print("UP klik!")
-        self.setChar('F')
-        self.buttUP.setIcon(QIcon(QPixmap("resources/PRESS/UP.png")))
+        if self.driveMode=='M' and self.menusManager.currentIndex()==2:
+            self.setChar('F')
+            self.buttUP.setIcon(QIcon(QPixmap("resources/PRESS/UP.png")))
 
     def buttUPOnHovered(self):
         self.buttUP.setIcon(QIcon(QPixmap("resources/HOVER/UP.png")))
@@ -891,8 +898,9 @@ class MainWindow(QMainWindow):
 
     def DOWNclicked(self):
         print("DOWN klik!")
-        self.setChar('B')
-        self.buttDOWN.setIcon(QIcon(QPixmap("resources/PRESS/DOWN.png")))
+        if self.driveMode == 'M' and self.menusManager.currentIndex() == 2:
+            self.setChar('B')
+            self.buttDOWN.setIcon(QIcon(QPixmap("resources/PRESS/DOWN.png")))
 
     def buttDOWNOnHovered(self):
         self.buttDOWN.setIcon(QIcon(QPixmap("resources/HOVER/DOWN.png")))
@@ -904,8 +912,9 @@ class MainWindow(QMainWindow):
 
     def LEFTclicked(self):
         print("LEFT klik!")
-        self.setChar('L')
-        self.buttLEFT.setIcon(QIcon(QPixmap("resources/PRESS/LEFT.png")))
+        if self.driveMode == 'M' and self.menusManager.currentIndex() == 2:
+            self.setChar('L')
+            self.buttLEFT.setIcon(QIcon(QPixmap("resources/PRESS/LEFT.png")))
 
     def buttLEFTOnHovered(self):
         self.buttLEFT.setIcon(QIcon(QPixmap("resources/HOVER/LEFT.png")))
@@ -916,8 +925,9 @@ class MainWindow(QMainWindow):
 
     def RIGHTclicked(self):
         print("RIGHT klik!")
-        self.setChar('R')
-        self.buttRIGHT.setIcon(QIcon(QPixmap("resources/PRESS/RIGHT.png")))
+        if self.driveMode == 'M' and self.menusManager.currentIndex() == 2:
+            self.setChar('R')
+            self.buttRIGHT.setIcon(QIcon(QPixmap("resources/PRESS/RIGHT.png")))
 
     def buttRIGHTOnHovered(self):
         self.buttRIGHT.setIcon(QIcon(QPixmap("resources/HOVER/RIGHT.png")))
